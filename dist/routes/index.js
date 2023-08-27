@@ -7,7 +7,7 @@ router.get("/", function (req, res, next) {
     res.render("index", { title: "Express" });
 });
 router.get("/sign-up", function (req, res, next) {
-    res.send("NOT INMPLEMENTED: Get Sign-up");
+    res.render("sign-up");
 });
 router.post("/sign-up", function (req, res, next) {
     res.send("NOT IMPLEMENTED: Post Sign-up");

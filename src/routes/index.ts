@@ -9,7 +9,7 @@ router.get("/", function (req: Request, res: Response, next: NextFunction) {
 });
 
 router.get("/sign-up", function (req: Request, res: Response, next: NextFunction) {
-	res.send("NOT INMPLEMENTED: Get Sign-up");
+	res.render("sign-up");
 });
 
 router.post("/sign-up", function (req: Request, res: Response, next: NextFunction) {
