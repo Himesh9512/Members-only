@@ -1,13 +1,10 @@
-import express, { NextFunction, Request, Response } from "express";
-import { HttpError } from "http-errors";
-import { Mongoose } from "mongoose";
-import * as dotenv from "dotenv";
-
+const express = require("express");
 const createError = require("http-errors");
 const path = require("path");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const dotenv = require("dotenv");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 
@@ -19,12 +16,11 @@ dotenv.config();
 const app = express();
 
 // mongodb connection
-const mongoose: Mongoose = require("mongoose");
+const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-
 async function main() {
 	const mongodb = process.env.CONNECTION_KEY;
-	mongoose.connect(mongodb as string);
+	mongoose.connect(mongodb);
 }
 
 main().catch((e) => console.log(e));
@@ -44,12 +40,12 @@ app.use("/", indexRouter);
 app.use("/user", userRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req: Request, res: Response, next: NextFunction) {
+app.use(function (req, res, next) {
 	next(createError(404));
 });
 
 // error handler
-app.use(function (err: HttpError, req: Request, res: Response, next: NextFunction) {
+app.use(function (err, req, res, next) {
 	// set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get("env") === "development" ? err : {};
