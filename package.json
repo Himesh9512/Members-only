@@ -2,15 +2,12 @@
 	"name": "members-only",
 	"version": "0.0.0",
 	"private": true,
-	"main": "index.js",
 	"scripts": {
-		"build": "npx tsc",
 		"start": "node ./bin/www",
-		"devStart": "concurrently \"tsc --watch\" \"nodemon -q ./bin/www\" ",
-		"server": "DEBUG=express-locallibrary-tutorial:* npm run devStart"
+		"dev": "nodemon ./bin/www",
+		"server": "DEBUG=express-locallibrary-tutorial:* npm run start"
 	},
 	"devDependencies": {
-		"concurrently": "^8.2.1",
 		"nodemon": "^3.0.1"
 	},
 	"dependencies": {
