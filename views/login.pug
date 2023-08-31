@@ -1,0 +1,14 @@
+extends layout 
+
+block content 
+    h1 Login
+
+    form(action="/login", method="post")
+
+        label(for="email")  Email
+        input#email(type="email",name="username", required)
+
+        label(for="password")  Password
+        input#password(type="password",name="password", minLength="8", maxLength="20",  required)
+
+        button(type="submit") Login

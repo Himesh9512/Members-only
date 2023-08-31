@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
+const passport = require("passport");
 
 exports.user_sign_up = [
 	body("name", "Name should not be empty").trim().isLength({ min: 1 }).escape(),
@@ -61,7 +62,22 @@ exports.user_sign_up = [
 		} else {
 			await user.save();
 			console.log(await User.find({}));
-			res.send("User added");
+			res.redirect("/login");
 		}
 	}),
 ];
+
+exports.user_login = passport.authenticate("local", {
+	successRedirect: "/",
+	failureRedirect: "/login",
+});
+
+exports.user_logout = (req, res, next) => {
+	req.logout(function (err) {
+		if (err) {
+			return next(err);
+		} else {
+			res.redirect("/");
+		}
+	});
+};
