@@ -23,4 +23,28 @@ router.post("/login", user_controller.user_login);
 
 router.get("/logout", user_controller.user_logout);
 
+router.get("/join-club", function (req, res, next) {
+	res.send("NOT IMPLEMENTED: Get Join club");
+});
+
+router.post("/join-club", function (req, res, next) {
+	res.send("NOT IMPLEMENTED: Post Join club");
+});
+
+router.get("/write", function (req, res, next) {
+	res.send("NOT IMPLEMENTED: Get Write message");
+});
+
+router.post("/write", function (req, res, next) {
+	res.send("NOT IMPLEMENTED: Post Write message");
+});
+
+router.get("/delete", function (req, res, next) {
+	res.send("NOT IMPLEMENTED: Get Delete message");
+});
+
+router.post("/delete", function (req, res, next) {
+	res.send("NOT IMPLEMENTED: Post Delete message");
+});
+
 module.exports = router;
