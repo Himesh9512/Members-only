@@ -1,5 +1,9 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  if user 
+    h1 Welcome back, #{user.name}!
+    button New Message
+  else 
+    h1 Welcome to Members Only!
+    p Login or create a new account to chat with community

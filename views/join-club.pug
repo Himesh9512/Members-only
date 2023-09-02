@@ -1,0 +1,20 @@
+extend layout 
+
+block content   
+    h1 Join the Member's club
+
+    p enter the secret code to join the member's club! 
+
+    br
+
+    form(action="/join-club", method="post")
+
+        label(for="secret-code") Enter the Code: 
+        input#secret-code(type="text", name="secret-code", required) 
+
+        button(type="submit") Submit 
+    
+    if errors 
+        ul
+            for error in errors 
+                li!= error.msg

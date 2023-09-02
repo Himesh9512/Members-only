@@ -24,12 +24,10 @@ router.post("/login", user_controller.user_login);
 router.get("/logout", user_controller.user_logout);
 
 router.get("/join-club", function (req, res, next) {
-	res.send("NOT IMPLEMENTED: Get Join club");
+	res.render("join-club");
 });
 
-router.post("/join-club", function (req, res, next) {
-	res.send("NOT IMPLEMENTED: Post Join club");
-});
+router.post("/join-club", user_controller.user_join_club);
 
 router.get("/write", function (req, res, next) {
 	res.send("NOT IMPLEMENTED: Get Write message");

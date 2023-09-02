@@ -81,3 +81,30 @@ exports.user_logout = (req, res, next) => {
 		}
 	});
 };
+
+exports.user_join_club = [
+	body("secret-code")
+		.trim()
+		.notEmpty()
+		.withMessage("Field is Empty")
+		.custom(function (value) {
+			const secretCode = process.env.SECRET_CODE;
+
+			console.log(value);
+			return secretCode === value;
+		})
+		.withMessage("Secret Code does not match!"),
+	asyncHandler(async function (req, res, next) {
+		const results = validationResult(req);
+
+		if (!req.user) {
+			res.redirect("/login");
+		}
+		if (!results.isEmpty()) {
+			res.render("join-club", { errors: results.array() });
+		} else {
+			await User.updateOne({ email: req.user.email }, { isMember: true });
+			res.redirect("/");
+		}
+	}),
+];
