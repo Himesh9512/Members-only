@@ -3,7 +3,33 @@ extends layout
 block content
   if user 
     h1 Welcome back, #{user.name}!
-    button New Message
+    
+    form(action="/message-create", method="post")
+
+      label(for="title")  Title
+      input#title(type="text",name="title", minLength="1", maxLength="20",  required)
+
+      label(for="content")  Content
+      input#content(type="text",name="content", minLength="1", maxLength="50",  required)
+
+      button(type="submit") Submit 
+
+    if errors 
+      ul 
+        for error in errors 
+          li!= error.msg
+
   else 
     h1 Welcome to Members Only!
     p Login or create a new account to chat with community
+
+  br
+
+  h2 Messages 
+
+  if messages === [] 
+    p chat is empty!
+  else
+    ul 
+      for message in messages 
+        li= message.title

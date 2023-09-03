@@ -2,46 +2,28 @@ const express = require("express");
 const router = express.Router();
 
 const user_controller = require("../controllers/userController");
-const passport = require("passport");
+const message_controller = require("../controllers/messageController");
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
-	res.render("index", { title: "Express", user: req.user });
-});
+router.get("/", user_controller.index);
 
-router.get("/sign-up", function (req, res, next) {
-	res.render("sign-up");
-});
+router.get("/sign-up", user_controller.user_sign_up_get);
 
-router.post("/sign-up", user_controller.user_sign_up);
+router.post("/sign-up", user_controller.user_sign_up_post);
 
-router.get("/login", function (req, res, next) {
-	res.render("login");
-});
+router.get("/login", user_controller.user_login_get);
 
-router.post("/login", user_controller.user_login);
+router.post("/login", user_controller.user_login_post);
 
 router.get("/logout", user_controller.user_logout);
 
-router.get("/join-club", function (req, res, next) {
-	res.render("join-club");
-});
+router.get("/join-club", user_controller.user_join_club_get);
 
-router.post("/join-club", user_controller.user_join_club);
+router.post("/join-club", user_controller.user_join_club_post);
 
-router.get("/write", function (req, res, next) {
-	res.send("NOT IMPLEMENTED: Get Write message");
-});
+router.post("/message-create", message_controller.create_message);
 
-router.post("/write", function (req, res, next) {
-	res.send("NOT IMPLEMENTED: Post Write message");
-});
-
-router.get("/delete", function (req, res, next) {
-	res.send("NOT IMPLEMENTED: Get Delete message");
-});
-
-router.post("/delete", function (req, res, next) {
+router.post("/message-delete", function (req, res, next) {
 	res.send("NOT IMPLEMENTED: Post Delete message");
 });
 

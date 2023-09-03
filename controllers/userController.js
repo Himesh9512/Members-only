@@ -1,10 +1,20 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
+const Message = require("../models/Message");
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 const passport = require("passport");
 
-exports.user_sign_up = [
+exports.index = asyncHandler(async function (req, res, next) {
+	const messages = await Message.find({});
+	res.render("index", { user: req.user, messages: messages });
+});
+
+exports.user_sign_up_get = function (req, res, next) {
+	res.render("sign-up");
+};
+
+exports.user_sign_up_post = [
 	body("name", "Name should not be empty").trim().isLength({ min: 1 }).escape(),
 	body("email")
 		.trim()
@@ -13,11 +23,11 @@ exports.user_sign_up = [
 		.custom(async (value) => {
 			const user = await User.findOne({ email: value });
 
-			console.log(user);
 			if (user) {
 				throw new Error("E-mail already exists");
 			}
-		}),
+		})
+		.escape(),
 	body("password")
 		.trim()
 		.notEmpty()
@@ -35,7 +45,8 @@ exports.user_sign_up = [
 			if (value !== password) {
 				throw new Error("Password did not match");
 			}
-		}),
+		})
+		.escape(),
 	asyncHandler(async function (req, res, next) {
 		bcrypt.hash(req.body.password, 10, async (err, hashPassword) => {
 			if (err) {
@@ -61,13 +72,19 @@ exports.user_sign_up = [
 			res.render("sign-up", { errors: results.array() });
 		} else {
 			await user.save();
-			console.log(await User.find({}));
 			res.redirect("/login");
 		}
 	}),
 ];
 
-exports.user_login = passport.authenticate("local", {
+exports.user_login_get = function (req, res, next) {
+	if (req.user) {
+		res.redirect("/");
+	}
+	res.render("login");
+};
+
+exports.user_login_post = passport.authenticate("local", {
 	successRedirect: "/",
 	failureRedirect: "/login",
 });
@@ -82,7 +99,14 @@ exports.user_logout = (req, res, next) => {
 	});
 };
 
-exports.user_join_club = [
+exports.user_join_club_get = function (req, res, next) {
+	if (!req.user) {
+		res.redirect("/login");
+	}
+	res.render("join-club", { user: req.user });
+};
+
+exports.user_join_club_post = [
 	body("secret-code")
 		.trim()
 		.notEmpty()
@@ -90,10 +114,10 @@ exports.user_join_club = [
 		.custom(function (value) {
 			const secretCode = process.env.SECRET_CODE;
 
-			console.log(value);
 			return secretCode === value;
 		})
-		.withMessage("Secret Code does not match!"),
+		.withMessage("Secret Code does not match!")
+		.escape(),
 	asyncHandler(async function (req, res, next) {
 		const results = validationResult(req);
 
@@ -101,7 +125,7 @@ exports.user_join_club = [
 			res.redirect("/login");
 		}
 		if (!results.isEmpty()) {
-			res.render("join-club", { errors: results.array() });
+			res.render("join-club", { user: req.user, errors: results.array() });
 		} else {
 			await User.updateOne({ email: req.user.email }, { isMember: true });
 			res.redirect("/");
