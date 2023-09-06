@@ -9,6 +9,8 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("./models/User");
 const bcrypt = require("bcryptjs");
+const compression = require("compression");
+const helmet = require("helmet");
 
 const indexRouter = require("./routes/index");
 
@@ -60,6 +62,10 @@ passport.deserializeUser(async function (id, done) {
 		done(err);
 	}
 });
+
+app.use(helmet());
+
+app.use(compression());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
