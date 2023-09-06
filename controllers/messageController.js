@@ -7,7 +7,7 @@ exports.create_message = [
 		.trim()
 		.notEmpty()
 		.withMessage("Title should not be empty")
-		.isLength({ min: 1, max: 40 })
+		.isLength({ min: 1, max: 50 })
 		.withMessage("Title length should be between 1 to 20 characters")
 		.escape(),
 	body("content").trim().escape(),
@@ -19,7 +19,7 @@ exports.create_message = [
 		}
 
 		const message = await Message({
-			userId: req.user._id,
+			user: req.user._id,
 			title: req.body.title,
 			content: req.body.content,
 			date: new Date(),

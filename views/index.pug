@@ -7,10 +7,10 @@ block content
     form(action="/message-create", method="post")
 
       label(for="title")  Title
-      input#title(type="text",name="title", minLength="1", maxLength="20",  required)
+      input#title(type="text",name="title", minLength="1", maxLength="50",  required)
 
       label(for="content")  Content
-      input#content(type="text",name="content", minLength="1", maxLength="50",  required)
+      input#content(type="text",name="content", minLength="1", maxLength="200",  required)
 
       button(type="submit") Submit 
 
@@ -32,4 +32,12 @@ block content
   else
     ul 
       for message in messages 
-        li= message.title
+        li
+          .msg-container 
+            if user && user.isMember
+              small Posted By #{message.user.name} on #{message.date_formatted}
+            else
+              small #[strong NOTE:] Become a member to know who wrote this message and when.
+            p.msg-title= message.title 
+            p.msg-content= message.content 
+

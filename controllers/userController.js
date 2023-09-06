@@ -6,7 +6,7 @@ const asyncHandler = require("express-async-handler");
 const passport = require("passport");
 
 exports.index = asyncHandler(async function (req, res, next) {
-	const messages = await Message.find({});
+	const messages = await Message.find({}).populate("user");
 	res.render("index", { user: req.user, messages: messages });
 });
 
