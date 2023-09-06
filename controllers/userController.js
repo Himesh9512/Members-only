@@ -116,7 +116,7 @@ exports.user_join_club_post = [
 
 			return secretCode === value;
 		})
-		.withMessage("Secret Code does not match!")
+		.withMessage("Secret Code is INVALID!")
 		.escape(),
 	asyncHandler(async function (req, res, next) {
 		const results = validationResult(req);
@@ -128,6 +128,40 @@ exports.user_join_club_post = [
 			res.render("join-club", { user: req.user, errors: results.array() });
 		} else {
 			await User.updateOne({ email: req.user.email }, { isMember: true });
+			res.redirect("/");
+		}
+	}),
+];
+
+exports.user_admin_get = function (req, res, next) {
+	if (!req.user) {
+		res.redirect("/login");
+	}
+	res.render("admin", { user: req.user });
+};
+
+exports.user_admin_post = [
+	body("secret-code")
+		.trim()
+		.notEmpty()
+		.withMessage("Field is Empty")
+		.custom(function (value) {
+			const secretCode = process.env.ADMIN_CODE;
+
+			return secretCode === value;
+		})
+		.withMessage("Secret Code is INVALID!")
+		.escape(),
+	asyncHandler(async function (req, res, next) {
+		const results = validationResult(req);
+
+		if (!req.user) {
+			res.redirect("/login");
+		}
+		if (!results.isEmpty()) {
+			res.render("admin", { user: req.user, errors: results.array() });
+		} else {
+			await User.updateOne({ email: req.user.email }, { isAdmin: true });
 			res.redirect("/");
 		}
 	}),
