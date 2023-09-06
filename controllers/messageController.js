@@ -34,3 +34,14 @@ exports.create_message = [
 		}
 	}),
 ];
+
+exports.delete_message = asyncHandler(async function (req, res, next) {
+	const message = req.params.id;
+
+	if (req.user && req.user.isAdmin) {
+		await Message.findByIdAndRemove(message);
+		res.redirect("/");
+	} else {
+		res.redirect("/");
+	}
+});

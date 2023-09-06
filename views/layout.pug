@@ -8,15 +8,16 @@ html
   body
     nav 
       h3 MEMBERS ONLY
-      if user && user.isMember
-        button
-          a(href="/logout") Logout
-      else if user
-        div
+      if user 
+        if user.isMember || user.isAdmin
           button
             a(href="/logout") Logout
-          button
-            a(href="/join-club") Member
+        else
+          div
+            button
+              a(href="/logout") Logout
+            button
+              a(href="/join-club") Member
       else
         div 
           button

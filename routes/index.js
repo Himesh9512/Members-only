@@ -23,8 +23,6 @@ router.post("/join-club", user_controller.user_join_club_post);
 
 router.post("/message-create", message_controller.create_message);
 
-router.post("/message-delete", function (req, res, next) {
-	res.send("NOT IMPLEMENTED: Post Delete message");
-});
+router.post("/message-delete/:id", message_controller.delete_message);
 
 module.exports = router;
